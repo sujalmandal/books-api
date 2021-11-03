@@ -34,6 +34,7 @@ public class Book {
         NOVELS,
         POETRY,
         ACADEMIC,
+        SCIENCE,
         OTHERS
     }
 

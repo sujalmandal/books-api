@@ -56,11 +56,24 @@ public class InitialInventoryLoader {
         b3Inv.setId(UUID.randomUUID().toString());
         b3Inv.setQuantity(1);
 
+        Book b4 = new Book();
+        b4.setName("Journey Through Time");
+        b4.setAuthor("Stephen Hawkins");
+        b4.setISBN("9781788037587");
+        b4.setDescription("The Metamorphosis (Norton Critical Edition)");
+        b4.setType(Book.Type.SCIENCE);
+        b4.setPrice(100);
+        BookInventory b4Inv = new BookInventory();
+        b3Inv.setBook(b4);
+        b3Inv.setId(UUID.randomUUID().toString());
+        b3Inv.setQuantity(2);
+
         this.bookInventoryRepository.save(b1Inv);
         this.bookInventoryRepository.save(b2Inv);
         this.bookInventoryRepository.save(b3Inv);
+        this.bookInventoryRepository.save(b4Inv);
 
-        log.info("saved books {}, {}, {}", b1, b2, b3);
+        log.info("saved books {}, {}, {}, {}", b1, b2, b3, b4);
     }
 
 }
