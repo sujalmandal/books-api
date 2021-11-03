@@ -29,7 +29,12 @@ public class Book {
     public enum Type {
         COMICS,
         EDUCATIONAL,
-        FICTIONAL
+        FICTIONAL,
+        HISTORY,
+        NOVELS,
+        POETRY,
+        ACADEMIC,
+        OTHERS
     }
 
     @Override

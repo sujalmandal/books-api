@@ -35,7 +35,7 @@ public class BaseConfiguration implements InitializingBean, DisposableBean {
                 .build();
     }
 
-    /* app-specific configuration */
+    /* data-loader configurations */
     @Bean
     public InitialInventoryLoader injectInitialCatalogLoader(
             BookInventoryRepository bookInventoryRepository){
@@ -49,6 +49,7 @@ public class BaseConfiguration implements InitializingBean, DisposableBean {
         return new InitialDiscountsLoader(discountRepository);
     }
 
+    /* service configurations */
     @Bean
     public BookCatalogService injectBookCatalogService(BookInventoryRepository bookInventoryRepository){
         return new BookCatalogServiceImpl(bookInventoryRepository);
