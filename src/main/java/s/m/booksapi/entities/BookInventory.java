@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.UUID;
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -17,4 +17,9 @@ public class BookInventory {
     @Embedded
     private Book book;
     private int quantity;
+
+    public BookInventory(){
+        this.id = UUID.randomUUID().toString();
+    }
+
 }

@@ -28,11 +28,14 @@ public class PriceCalcHelper {
 
         for(BookOrderDetail book : order.getBooks()){
                 double currentBookPrice = book.getPrice();
-                Discount discountForGenre = discountsByType.get(book.getType()).get(0);
-                /* calculate percentage discount */
-                currentBookPrice = ((100-discountForGenre.getPercentageDiscount())/100 * currentBookPrice)
-                        * book.getQuantity();
-                price += currentBookPrice;
+                Discount discountForGenre = discountsByType.get(book.getType())==null?
+                        null:discountsByType.get(book.getType()).get(0);
+                if(Objects.nonNull(discountForGenre)){
+                    /* calculate percentage discount */
+                    currentBookPrice = ((100-discountForGenre.getPercentageDiscount())/100 * currentBookPrice)
+                            * book.getQuantity();
+                }
+                price += currentBookPrice * book.getQuantity();
         }
 
         /* calculate final discount */

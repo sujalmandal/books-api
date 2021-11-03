@@ -1,6 +1,7 @@
 package s.m.booksapi.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import s.m.booksapi.dao.DiscountRepository;
@@ -62,8 +63,10 @@ public class CheckoutServiceImpl implements CheckoutService {
                         .collect(Collectors.toSet())
         ));
         /* optional coupon code */
-        Discount optionalDiscountCode = discountRepository.findDiscountByCouponCode(couponCode);
-        discounts.add(optionalDiscountCode);
+        if(StringUtils.isNotEmpty(couponCode)){
+            Discount optionalDiscountCode = discountRepository.findDiscountByCouponCode(couponCode);
+            discounts.add(optionalDiscountCode);
+        }
         order.setDiscounts(discounts);
         /* price before discounts */
         order.setTotalPriceBeforeDiscount(getPriceBeforeDiscounts(order));

@@ -28,7 +28,6 @@ public class InitialInventoryLoader {
         b1.setPrice(299.99);
         BookInventory b1Inv = new BookInventory();
         b1Inv.setBook(b1);
-        b1Inv.setId(UUID.randomUUID().toString());
         b1Inv.setQuantity(3);
 
         Book b2 = new Book();
@@ -40,7 +39,6 @@ public class InitialInventoryLoader {
         b2.setPrice(24.95);
         BookInventory b2Inv = new BookInventory();
         b2Inv.setBook(b2);
-        b2Inv.setId(UUID.randomUUID().toString());
         b2Inv.setQuantity(2);
 
 
@@ -53,7 +51,6 @@ public class InitialInventoryLoader {
         b3.setPrice(3.95);
         BookInventory b3Inv = new BookInventory();
         b3Inv.setBook(b3);
-        b3Inv.setId(UUID.randomUUID().toString());
         b3Inv.setQuantity(1);
 
         Book b4 = new Book();
@@ -64,9 +61,8 @@ public class InitialInventoryLoader {
         b4.setType(Book.Type.SCIENCE);
         b4.setPrice(100);
         BookInventory b4Inv = new BookInventory();
-        b3Inv.setBook(b4);
-        b3Inv.setId(UUID.randomUUID().toString());
-        b3Inv.setQuantity(2);
+        b4Inv.setBook(b4);
+        b4Inv.setQuantity(2);
 
         this.bookInventoryRepository.save(b1Inv);
         this.bookInventoryRepository.save(b2Inv);

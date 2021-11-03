@@ -39,23 +39,13 @@ public class ValidationService {
     }
 
     public void validateSaveBook(BookOrderDetail book) {
-        if(!(book.getQuantity()>0)){
-            throw new BookAppException(ErrorCode.INVALID_QTY);
-        }
-        if(!(book.getPrice()>0)){
-            throw new BookAppException(ErrorCode.INVALID_PRICE);
-        }
-        if(StringUtils.isEmpty(book.getAuthor()) || Objects.isNull(book.getType())
-            || StringUtils.isEmpty(book.getISBN()) || StringUtils.isEmpty(book.getName())){
-            throw new BookAppException(ErrorCode.REQUIRED_PARAM_EMPTY);
-        }
+        commonValidation(book);
         if(Objects.nonNull(bookInventoryRepository.findBookInventoryByISBN(book.getISBN()))){
             throw new BookAppException(ErrorCode.ISBN_ALREADY_PRESENT);
         }
     }
-
     public void validateUpdateBook(BookOrderDetail book) {
-        this.validateSaveBook(book);
+        commonValidation(book);
         this.validateISBN(book.getISBN());
     }
 
@@ -74,4 +64,18 @@ public class ValidationService {
             }
         }
     }
+
+    private void commonValidation(BookOrderDetail book) {
+        if(!(book.getQuantity()>0)){
+            throw new BookAppException(ErrorCode.INVALID_QTY);
+        }
+        if(!(book.getPrice()>0)){
+            throw new BookAppException(ErrorCode.INVALID_PRICE);
+        }
+        if(StringUtils.isEmpty(book.getAuthor()) || Objects.isNull(book.getType())
+                || StringUtils.isEmpty(book.getISBN()) || StringUtils.isEmpty(book.getName())){
+            throw new BookAppException(ErrorCode.REQUIRED_PARAM_EMPTY);
+        }
+    }
+
 }
