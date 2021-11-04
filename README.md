@@ -11,6 +11,7 @@ java -jar ./target/books-api-1.0.0.jar
 
 ## Load the docker image and run
 -----------------------------------------------
+#### Download books-api.tar from the release page [books-api.tar v1.0.0](https://github.com/sujalmandal/books-api/releases/tag/1.0.0)
 ```
 docker load < books-api.tar
 ```
