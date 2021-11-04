@@ -69,7 +69,9 @@ public class CheckoutServiceTest {
 
         assertEquals(completedOrder.getOrderStatus(), BookOrder.Status.COMPLETE);
         assertTrue(completedOrder.getBooks()
-                .containsAll(getBookOrderDetailSet(getTestbook_1(),getTestBook_2())));
+                .containsAll(getBookOrderDetailSet(
+                        getTestbook_1().getBookOrderDetail(),
+                        getTestBook_2().getBookOrderDetail())));
 
         Double expectedPriceBeforeDiscount =
                 getTestbook_1().getPrice() * getTestbook_1().getQuantity() +

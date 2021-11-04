@@ -11,6 +11,7 @@ import s.m.booksapi.dao.BookInventoryRepository;
 import s.m.booksapi.dao.CheckoutRepository;
 import s.m.booksapi.dao.DiscountRepository;
 import s.m.booksapi.dao.OrderBookDetailRepository;
+import s.m.booksapi.dto.BookOrderDetailDTO;
 import s.m.booksapi.dto.CheckoutDTO;
 import s.m.booksapi.entities.BookInventory;
 import s.m.booksapi.entities.BookOrderDetail;
@@ -72,16 +73,15 @@ public class ValidationServiceTest {
     }
 
     @Test
-    public void validateUpdateBook_WithBadID(){
+    public void validateUpdateBook_WithBadISBN(){
 
-        when(bookInventoryRepository.findBookInventoryByISBN(getTestbook_1().getISBN()))
+        when(bookInventoryRepository.findBookInventoryByISBN(TEST_ISBN_INVALID))
                 .thenReturn(new BookInventory());
         BookAppException ex = assertThrows(BookAppException.class,() -> {
-            BookOrderDetail invalidIdBook = getTestbook_1();
-            invalidIdBook.setId(null);
+            BookOrderDetailDTO invalidIdBook = getTestbook_1();
             validationService.validateUpdateBook(invalidIdBook);
         });
-        assertEquals(ex.getErrorCode(),ErrorCode.UPDATE_REQUIRES_PROPER_ID);
+        assertEquals(ex.getErrorCode(),ErrorCode.NO_SUCH_BOOK_FOUND);
     }
 
     @Test

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import s.m.booksapi.dto.BookOrderDetailDTO;
 import s.m.booksapi.entities.BookOrderDetail;
 import s.m.booksapi.dto.CheckoutDTO;
 import s.m.booksapi.dto.ResponseDTO;
@@ -47,17 +48,17 @@ public class BooksShopController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDTO<?>> saveBook(@RequestBody BookOrderDetail book){
-        sanitizeSaveBookRequest(book);
+    public ResponseEntity<ResponseDTO<?>> saveBook(@RequestBody BookOrderDetailDTO book){
         validationService.validateSaveBook(book);
-        ResponseDTO<BookOrderDetail> response = new ResponseDTO<>(bookCatalogService.addBookToInventory(book));
+        ResponseDTO<BookOrderDetail> response = new ResponseDTO<>(bookCatalogService
+                .addBookToInventory(book.getBookOrderDetail()));
         return ResponseEntity.ok(response);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDTO<?>> updateBook(@RequestBody BookOrderDetail book){
+    public ResponseEntity<ResponseDTO<?>> updateBook(@RequestBody BookOrderDetailDTO book){
         validationService.validateUpdateBook(book);
-        bookCatalogService.updateBookInventory(book);
+        bookCatalogService.updateBookInventory(book.getBookOrderDetail());
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
@@ -73,10 +74,6 @@ public class BooksShopController {
         validationService.validateCheckout(checkoutDTO);
         ResponseDTO<BookOrder> response = new ResponseDTO<>(checkoutService.checkout(checkoutDTO));
         return ResponseEntity.ok(response);
-    }
-
-    private void sanitizeSaveBookRequest(BookOrderDetail book) {
-        book.setId(null);
     }
 
 }

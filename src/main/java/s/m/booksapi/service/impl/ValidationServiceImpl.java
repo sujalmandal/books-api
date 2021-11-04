@@ -5,6 +5,7 @@ import s.m.booksapi.dao.BookInventoryRepository;
 import s.m.booksapi.dao.CheckoutRepository;
 import s.m.booksapi.dao.DiscountRepository;
 import s.m.booksapi.dao.OrderBookDetailRepository;
+import s.m.booksapi.dto.BookOrderDetailDTO;
 import s.m.booksapi.dto.BookQtyDTO;
 import s.m.booksapi.dto.CheckoutDTO;
 import s.m.booksapi.entities.BookOrderDetail;
@@ -41,7 +42,7 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public void validateSaveBook(BookOrderDetail book) {
+    public void validateSaveBook(BookOrderDetailDTO book) {
         commonValidation(book);
         if(Objects.nonNull(bookInventoryRepository.findBookInventoryByISBN(book.getISBN()))){
             throw new BookAppException(ErrorCode.ISBN_ALREADY_PRESENT);
@@ -49,12 +50,9 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public void validateUpdateBook(BookOrderDetail book) {
+    public void validateUpdateBook(BookOrderDetailDTO book) {
         commonValidation(book);
         this.validateISBN(book.getISBN());
-        if(StringUtils.isEmpty(book.getId())){
-            throw new BookAppException(ErrorCode.UPDATE_REQUIRES_PROPER_ID);
-        }
     }
 
     @Override
@@ -74,7 +72,7 @@ public class ValidationServiceImpl implements ValidationService {
         }
     }
 
-    private void commonValidation(BookOrderDetail book) {
+    private void commonValidation(BookOrderDetailDTO book) {
         if(!(book.getQuantity()>0)){
             throw new BookAppException(ErrorCode.INVALID_QTY);
         }

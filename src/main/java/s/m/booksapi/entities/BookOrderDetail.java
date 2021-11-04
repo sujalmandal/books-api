@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -49,5 +50,18 @@ public class BookOrderDetail {
         BeanUtils.copyProperties(bookInventory.getBook(), bookOrderDetail);
         bookOrderDetail.setQuantity(bookInventory.getQuantity());
         return bookOrderDetail;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookOrderDetail that = (BookOrderDetail) o;
+        return Objects.equals(ISBN, that.ISBN);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ISBN);
     }
 }

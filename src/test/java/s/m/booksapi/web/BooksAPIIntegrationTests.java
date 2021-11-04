@@ -81,25 +81,20 @@ class BooksAPIIntegrationTests {
 
     @Test
     @Order(4)
-    public void testUpdateBook() {
+    public void testUpdateBookByISBN() {
         String getBookByISBNURI = String.format(API_URI_TEMPLATE, port,
                 String.format(BY_ISBN, TEST_ISBN_1));
 
-        ResponseDTO<?> savedBookResponse =
-                this.restTemplate.getForObject(getBookByISBNURI, ResponseDTO.class);
-
-        String savedBookId = (String) savedBookResponse.getBodyAsMap().get("id");
-
-        BookOrderDetail bookToUpdate = getTestbook_1();
+        BookOrderDetail bookToUpdate = getTestbook_1().getBookOrderDetail();
         bookToUpdate.setName(bookToUpdate.getName()+" UPDATED");
-        /* required for update */
-        bookToUpdate.setId(savedBookId);
         String putURI = String.format(API_URI_TEMPLATE, port, ROOT);
         /* update */
         restTemplate.put(putURI, bookToUpdate);
+
         ResponseDTO<?> updatedBookResponse =
                 this.restTemplate.getForObject(getBookByISBNURI, ResponseDTO.class);
         String updatedName = (String) updatedBookResponse.getBodyAsMap().get("name");
+
         assertTrue(updatedName.contains("UPDATED"));
     }
 

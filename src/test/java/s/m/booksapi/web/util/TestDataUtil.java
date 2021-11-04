@@ -1,5 +1,6 @@
 package s.m.booksapi.web.util;
 
+import s.m.booksapi.dto.BookOrderDetailDTO;
 import s.m.booksapi.dto.BookQtyDTO;
 import s.m.booksapi.dto.CheckoutDTO;
 import s.m.booksapi.entities.Book;
@@ -20,9 +21,8 @@ public class TestDataUtil {
     public static final String TEST_INVALID_COUPON_CODE = "BADCOUPON";
     public static final String TEST_COUPON_CODE = "10PERCENTOFF";
 
-    public static BookOrderDetail getTestBook_2() {
-        BookOrderDetail book = new BookOrderDetail();
-        book.setId(null);
+    public static BookOrderDetailDTO getTestBook_2() {
+        BookOrderDetailDTO book = new BookOrderDetailDTO();
         book.setType(Book.Type.FICTIONAL);
         book.setPrice(100.00);
         book.setAuthor("Takashi Hikimoto");
@@ -33,9 +33,8 @@ public class TestDataUtil {
         return book;
     }
 
-    public static BookOrderDetail getTestbook_1() {
-        BookOrderDetail book = new BookOrderDetail();
-        book.setId(null);
+    public static BookOrderDetailDTO getTestbook_1() {
+        BookOrderDetailDTO book = new BookOrderDetailDTO();
         book.setType(Book.Type.FICTIONAL);
         book.setPrice(100.00);
         book.setAuthor("Sujal Mandal");
@@ -62,8 +61,8 @@ public class TestDataUtil {
 
     public static Set<BookOrderDetail> getTestBookOrderDetailSetForCheckoutDTO(){
         Set<BookOrderDetail> removedBooks = new LinkedHashSet<>();
-        removedBooks.add(getTestbook_1());
-        removedBooks.add(getTestBook_2());
+        removedBooks.add(getTestbook_1().getBookOrderDetail());
+        removedBooks.add(getTestBook_2().getBookOrderDetail());
         return removedBooks;
     }
 
