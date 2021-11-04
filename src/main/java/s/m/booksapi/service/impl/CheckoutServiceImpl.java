@@ -54,7 +54,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         return bookOrder;
     }
 
-    public void fillOrderDetails(Set<BookOrderDetail> books, String couponCode, BookOrder order){
+    private void fillOrderDetails(Set<BookOrderDetail> books, String couponCode, BookOrder order){
         order.setBooks(books);
         /* book type discounts first */
         Set<Discount> discounts = new LinkedHashSet<>(discountRepository.findDiscountsByBookTypeIn(

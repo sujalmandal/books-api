@@ -35,7 +35,7 @@ public class PriceCalcHelper {
                     currentBookPrice = ((100-discountForGenre.getPercentageDiscount())/100 * currentBookPrice)
                             * book.getQuantity();
                 }
-                price += currentBookPrice * book.getQuantity();
+                price += currentBookPrice;
         }
 
         /* calculate final discount */

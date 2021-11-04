@@ -3,6 +3,7 @@ package s.m.booksapi.entities;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "book_order")
+@ToString
 public class BookOrder {
     @Id
     private String id;
@@ -38,4 +40,5 @@ public class BookOrder {
         this.setId(UUID.randomUUID().toString());
         this.setOrderStatus(BookOrder.Status.PENDING);
     }
+
 }

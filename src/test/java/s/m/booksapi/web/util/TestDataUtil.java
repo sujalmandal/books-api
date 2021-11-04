@@ -4,8 +4,11 @@ import s.m.booksapi.dto.BookQtyDTO;
 import s.m.booksapi.dto.CheckoutDTO;
 import s.m.booksapi.entities.Book;
 import s.m.booksapi.entities.BookOrderDetail;
+import s.m.booksapi.entities.Discount;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class TestDataUtil {
@@ -15,11 +18,12 @@ public class TestDataUtil {
     public static final String TEST_ISBN_INVALID = "0000000";
 
     public static final String TEST_INVALID_COUPON_CODE = "BADCOUPON";
+    public static final String TEST_COUPON_CODE = "10PERCENTOFF";
 
     public static BookOrderDetail getTestBook_2() {
         BookOrderDetail book = new BookOrderDetail();
         book.setId(null);
-        book.setType(Book.Type.COMICS);
+        book.setType(Book.Type.FICTIONAL);
         book.setPrice(100.00);
         book.setAuthor("Takashi Hikimoto");
         book.setISBN(TEST_ISBN_2);
@@ -32,7 +36,7 @@ public class TestDataUtil {
     public static BookOrderDetail getTestbook_1() {
         BookOrderDetail book = new BookOrderDetail();
         book.setId(null);
-        book.setType(Book.Type.EDUCATIONAL);
+        book.setType(Book.Type.FICTIONAL);
         book.setPrice(100.00);
         book.setAuthor("Sujal Mandal");
         book.setISBN(TEST_ISBN_1);
@@ -52,6 +56,38 @@ public class TestDataUtil {
         bookQtyDTO2.setISBN(getTestBook_2().getISBN());
         bookQtyDTOSet.add(bookQtyDTO2);
         checkoutDTO.setBooks(bookQtyDTOSet);
+        checkoutDTO.setCouponCode(TEST_COUPON_CODE);
         return checkoutDTO;
     }
+
+    public static Set<BookOrderDetail> getTestBookOrderDetailSetForCheckoutDTO(){
+        Set<BookOrderDetail> removedBooks = new LinkedHashSet<>();
+        removedBooks.add(getTestbook_1());
+        removedBooks.add(getTestBook_2());
+        return removedBooks;
+    }
+
+    public static Discount getTestFictionalTypeDiscount_5PercentOff(){
+        Discount fictionDiscount = new Discount();
+        fictionDiscount.setBookType(Book.Type.FICTIONAL);
+        fictionDiscount.setIsGenreWideDiscount(Boolean.TRUE);
+        fictionDiscount.setPercentageDiscount(5.00);
+        return fictionDiscount;
+    }
+
+    public static Discount getTestOptionalDiscount_10PercentOff(){
+        Discount tenPercentOff = new Discount();
+        tenPercentOff.setCouponCode(TEST_COUPON_CODE);
+        tenPercentOff.setPercentageDiscount(10.00);
+        return tenPercentOff;
+    }
+
+    public static Set<Discount> getDiscountSet(Discount... discounts){
+        return new LinkedHashSet<>(Arrays.asList(discounts));
+    }
+
+    public static Set<BookOrderDetail> getBookOrderDetailSet(BookOrderDetail... bookOrderDetails){
+        return new LinkedHashSet<>(Arrays.asList(bookOrderDetails));
+    }
+
 }
