@@ -10,6 +10,7 @@ public class BookAppException extends RuntimeException {
     private final String errorMessage;
     private final HttpStatus httpStatus;
     private final Throwable throwable;
+    private ErrorCode errorCode;
 
     public BookAppException(ErrorCode errorCode, Throwable throwable){
         super(throwable);
@@ -23,6 +24,7 @@ public class BookAppException extends RuntimeException {
         this.throwable = super.getCause();
         this.errorMessage = errorCode.getMessage();
         this.httpStatus = errorCode.getStatus();
+        this.errorCode = errorCode;
     }
 
     public ResponseDTO<?> getResponse(){

@@ -11,21 +11,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import s.m.booksapi.dto.ResponseDTO;
-import s.m.booksapi.entities.Book;
 import s.m.booksapi.entities.BookOrderDetail;
 
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static s.m.booksapi.web.util.TestDataUtil.*;
 
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BooksAPIIntegrationTests {
 
-    public static final String TEST_ISBN_1 = "9999999";
-    public static final String TEST_ISBN_2 = "8903222";
-    public static final String TEST_ISBN_INVALID = "0000000";
     private final String API_URI_TEMPLATE = "http://localhost:%s/books-api/%s";
     private final String ROOT ="/";
     private final String BY_ISBN ="/%s";
@@ -128,32 +125,6 @@ class BooksAPIIntegrationTests {
         ResponseDTO<?> resp = this.restTemplate.getForObject(getBookByISBNURI, ResponseDTO.class);
         log.info("response : {}", resp);
         assertTrue(resp.getBodyAsString().contains("ISBN was not found"));
-    }
-
-    private BookOrderDetail getTestBook_2() {
-        BookOrderDetail book = new BookOrderDetail();
-        book.setId(null);
-        book.setType(Book.Type.COMICS);
-        book.setPrice(100.00);
-        book.setAuthor("Takashi Hikimoto");
-        book.setISBN(TEST_ISBN_2);
-        book.setName("Doraemon");
-        book.setDescription("Robot cat from the future helps his sloppy buddy.");
-        book.setQuantity(3);
-        return book;
-    }
-
-    private BookOrderDetail getTestbook_1() {
-        BookOrderDetail book = new BookOrderDetail();
-        book.setId(null);
-        book.setType(Book.Type.EDUCATIONAL);
-        book.setPrice(100.00);
-        book.setAuthor("Sujal Mandal");
-        book.setISBN(TEST_ISBN_1);
-        book.setName("Round the world in 10 years");
-        book.setDescription("A budding software engineer explores the world in a decade.");
-        book.setQuantity(3);
-        return book;
     }
 
 }
