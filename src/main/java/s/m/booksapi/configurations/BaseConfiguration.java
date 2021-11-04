@@ -3,9 +3,7 @@ package s.m.booksapi.configurations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 import s.m.booksapi.dao.*;
 import s.m.booksapi.loader.InitialInventoryLoader;
@@ -13,6 +11,7 @@ import s.m.booksapi.loader.InitialDiscountsLoader;
 import s.m.booksapi.service.*;
 import s.m.booksapi.service.impl.BookCatalogServiceImpl;
 import s.m.booksapi.service.impl.CheckoutServiceImpl;
+import s.m.booksapi.service.impl.ValidationServiceImpl;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -58,10 +57,10 @@ public class BaseConfiguration implements InitializingBean, DisposableBean {
     }
 
     @Bean
-    public ValidationService injectValidationService(
+    public ValidationServiceImpl injectValidationService(
             BookInventoryRepository bookInventoryRepository, CheckoutRepository checkoutRepository,
             DiscountRepository discountRepository, OrderBookDetailRepository orderBookDetailRepository){
-        return new ValidationService(
+        return new ValidationServiceImpl(
                 bookInventoryRepository,
                 checkoutRepository,
                 discountRepository,

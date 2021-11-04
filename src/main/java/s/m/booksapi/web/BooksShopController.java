@@ -1,6 +1,8 @@
 package s.m.booksapi.web;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import s.m.booksapi.entities.BookOrderDetail;
@@ -9,22 +11,23 @@ import s.m.booksapi.dto.ResponseDTO;
 import s.m.booksapi.entities.BookOrder;
 import s.m.booksapi.service.BookCatalogService;
 import s.m.booksapi.service.CheckoutService;
-import s.m.booksapi.service.ValidationService;
+import s.m.booksapi.service.impl.ValidationServiceImpl;
 
 import java.util.Set;
 
 @RequestMapping("books-api")
 @RestController
+@Slf4j
 public class BooksShopController {
 
     private final BookCatalogService bookCatalogService;
     private final CheckoutService checkoutService;
-    private final ValidationService validationService;
+    private final ValidationServiceImpl validationService;
 
     @Autowired
     public BooksShopController(
             BookCatalogService bookCatalogService, CheckoutService checkoutService,
-            ValidationService validationService) {
+            ValidationServiceImpl validationService) {
         this.bookCatalogService = bookCatalogService;
         this.checkoutService = checkoutService;
         this.validationService = validationService;
@@ -45,6 +48,7 @@ public class BooksShopController {
 
     @PostMapping
     public ResponseEntity<ResponseDTO<?>> saveBook(@RequestBody BookOrderDetail book){
+        sanitizeSaveBookRequest(book);
         validationService.validateSaveBook(book);
         ResponseDTO<BookOrderDetail> response = new ResponseDTO<>(bookCatalogService.addBookToInventory(book));
         return ResponseEntity.ok(response);
@@ -53,8 +57,15 @@ public class BooksShopController {
     @PutMapping
     public ResponseEntity<ResponseDTO<?>> updateBook(@RequestBody BookOrderDetail book){
         validationService.validateUpdateBook(book);
-        ResponseDTO<BookOrderDetail> response = new ResponseDTO<>(bookCatalogService.updateBookInventory(book));
-        return ResponseEntity.ok(response);
+        bookCatalogService.updateBookInventory(book);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
+    @DeleteMapping("/{ISBN}")
+    public ResponseEntity<ResponseDTO<?>> dropBook(@PathVariable("ISBN") String ISBN){
+        validationService.validateISBN(ISBN);
+        bookCatalogService.dropBookFromInventory(ISBN);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @PostMapping("/checkout")
@@ -62,6 +73,10 @@ public class BooksShopController {
         validationService.validateCheckout(checkoutDTO);
         ResponseDTO<BookOrder> response = new ResponseDTO<>(checkoutService.checkout(checkoutDTO));
         return ResponseEntity.ok(response);
+    }
+
+    private void sanitizeSaveBookRequest(BookOrderDetail book) {
+        book.setId(null);
     }
 
 }

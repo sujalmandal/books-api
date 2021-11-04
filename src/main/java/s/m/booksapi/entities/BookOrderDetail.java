@@ -2,6 +2,7 @@ package s.m.booksapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Entity;
@@ -39,7 +40,7 @@ public class BookOrderDetail {
         BookInventory bookInventory = new BookInventory();
         bookInventory.setBook(this.getBook());
         bookInventory.setQuantity(this.quantity);
-        bookInventory.setId(UUID.randomUUID().toString());
+        bookInventory.setId(StringUtils.isEmpty(this.id)?UUID.randomUUID().toString():this.id);
         return bookInventory;
     }
 

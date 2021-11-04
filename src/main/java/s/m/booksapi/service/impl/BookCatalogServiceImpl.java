@@ -29,11 +29,12 @@ public class BookCatalogServiceImpl implements BookCatalogService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public BookOrderDetail addBookToInventory(BookOrderDetail bookItem) {
 
-        bookInventoryRepository.save(bookItem.getBookInventory());
-        log.info("saved book catalog entry with ISBN {}, qty {}",
+        BookInventory savedBookInventoryItem = bookInventoryRepository.save(bookItem.getBookInventory());
+        log.info("saved book catalog entry with id {} ISBN {}, qty {}",
+                bookItem.getBookInventory().getId(),
                 bookItem.getBookInventory().getBook().getISBN(),
                 bookItem.getBookInventory().getQuantity());
-        return bookItem;
+        return BookOrderDetail.fromBookInventory(savedBookInventoryItem);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class BookCatalogServiceImpl implements BookCatalogService {
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public BookOrderDetail updateBookInventory(BookOrderDetail bookItem) {
+    public void updateBookInventory(BookOrderDetail bookItem) {
         BookInventory previousBookInventory = bookInventoryRepository.findBookInventoryByISBN(bookItem.getISBN());
         log.info("updated book with ISBN {}", bookItem.getBook().getISBN());
 
@@ -51,13 +52,18 @@ public class BookCatalogServiceImpl implements BookCatalogService {
         updatedBookInventory.setBook(bookItem.getBook());
         updatedBookInventory.setQuantity(bookItem.getQuantity());
         updatedBookInventory.setId(previousBookInventory.getId());
-        bookInventoryRepository.save(updatedBookInventory);
+        updatedBookInventory = bookInventoryRepository.save(updatedBookInventory);
 
         log.info("updated book catalog entry with ISBN {}, qty {}",
                 updatedBookInventory.getBook().getISBN(),
                 updatedBookInventory.getQuantity());
 
-        return BookOrderDetail.fromBookInventory(updatedBookInventory);
+    }
+
+    @Override
+    public void dropBookFromInventory(String ISBN) {
+        BookInventory bookEntryToDrop = bookInventoryRepository.findBookInventoryByISBN(ISBN);
+        bookInventoryRepository.delete(bookEntryToDrop);
     }
 
     @Override

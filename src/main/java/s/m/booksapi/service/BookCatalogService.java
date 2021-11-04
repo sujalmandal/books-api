@@ -12,7 +12,9 @@ public interface BookCatalogService {
     /* should decrement inventory by one */
     BookOrderDetail getBookFromInventory(String ISBN);
     /* update inventory */
-    BookOrderDetail updateBookInventory(BookOrderDetail bookItem);
+    void updateBookInventory(BookOrderDetail bookItem);
+    /* drop entry from catalog */
+    void dropBookFromInventory(String ISBN);
     /* remove a book from the inventory */
     Set<BookOrderDetail> removeBooksFromInventory(Set<BookQtyDTO> bookQtyDTOSet);
     /* get all books */
